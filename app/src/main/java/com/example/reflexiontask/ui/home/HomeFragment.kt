@@ -1,32 +1,60 @@
 package com.example.reflexiontask.ui.home
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.reflexiontask.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.reflexiontask.adapter.MovieAdapter
+import com.example.reflexiontask.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = HomeFragment()
-    }
 
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by viewModels()
+    private lateinit var binding: FragmentHomeBinding
+    lateinit var layoutManager: LinearLayoutManager
+    lateinit var adapter: MovieAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        binding = FragmentHomeBinding.inflate(layoutInflater)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        layoutManager = LinearLayoutManager(requireContext())
+        adapter = MovieAdapter()
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.movieList.observe(this) {
+            adapter.submitList(it)
+        }
+
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val lastVisible = layoutManager.findFirstVisibleItemPosition()
+                val total = layoutManager.itemCount
+                Log.i("TAG-TAG", "getMovie: res ${total}  $lastVisible ${total == lastVisible+5}")
+                if(total == lastVisible +5 ){
+                    viewModel.getNextPage()
+                }
+            }
+        })
     }
 
 }

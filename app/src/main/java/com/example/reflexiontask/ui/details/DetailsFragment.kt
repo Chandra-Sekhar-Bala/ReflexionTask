@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,7 +18,10 @@ import com.example.reflexiontask.Constants
 import com.example.reflexiontask.R
 import com.example.reflexiontask.databinding.FragmentDetailsBinding
 import com.example.reflexiontask.model.Movie
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
     private val viewModel: DetailsViewModel by viewModels()
@@ -36,6 +40,8 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val args: DetailsFragmentArgs by navArgs()
         setupUI(args.movie)
+        viewModel.currentMovie = args.movie
+        viewModel.checkIfAlreadyExist()
     }
 
     override fun onResume() {
@@ -46,7 +52,17 @@ class DetailsFragment : Fragment() {
         binding.btnWatchTrailer.setOnClickListener {
             sendUserToYoutube()
         }
+        viewModel.existInDB.observe(this) {
+            val drawable = when (it) {
+                true -> ContextCompat.getDrawable(requireContext(), R.drawable.saved_filled)
+                false -> ContextCompat.getDrawable(requireContext(), R.drawable.saved)
+            }
+            binding.saveAsFavorite.setImageDrawable(drawable)
+        }
 
+        binding.saveAsFavorite.setOnClickListener{
+            viewModel.saveToDB()
+        }
     }
 
     private fun setupUI(data: Movie) {

@@ -1,13 +1,16 @@
 package com.example.reflexiontask.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+@Entity("Movies")
 data class Movie(
     val Cast: String = "",
     val Director: String = "",
     val Genres: String = "",
-    val IMDBID: String = "",
+    @PrimaryKey val IMDBID: String = "",
     @SerializedName("Movie Poster")
     val MoviePoster: String = "",
     val Rating: String = "",

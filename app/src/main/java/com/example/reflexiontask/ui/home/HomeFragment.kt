@@ -50,7 +50,6 @@ class HomeFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val lastVisible = layoutManager.findFirstVisibleItemPosition()
                 val total = layoutManager.itemCount
-                Log.i("TAG-TAG", "getMovie: res ${total}  $lastVisible ${total == lastVisible + 5}")
                 if (total == lastVisible + 5) {
                     viewModel.getNextPage()
                 }

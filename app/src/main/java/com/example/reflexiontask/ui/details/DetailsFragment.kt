@@ -70,6 +70,7 @@ class DetailsFragment : Fragment() {
         binding.title.text = data.Title
         binding.rating.text = String.format("%s/10", data.Rating)
         binding.release.text = data.Year
+        binding.runtime.text = data.Runtime
         val cast = data.Cast.split("|")
         cast.let {
             val casts = listOf(

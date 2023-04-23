@@ -5,5 +5,8 @@
 <!--         <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="TextColor">@color/white</item>
         <item name="invertTextColor">@color/black</item>
+        <item name="rectangle_bg_color">@color/dark_grey</item>
+        <item name="grey_border_color">@color/light_blue</item>
+
     </style>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.reflexiontask.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Movie(
     val Cast: String = "",
@@ -20,4 +21,4 @@ data class Movie(
     val Year: String = "",
     @SerializedName("YouTube Trailer")
     val YouTubeTrailer: String? = null
-)
+): Serializable

@@ -1,29 +1,100 @@
 package com.example.reflexiontask.ui.details
 
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.signature.ObjectKey
+import com.example.reflexiontask.Constants
 import com.example.reflexiontask.R
+import com.example.reflexiontask.databinding.FragmentDetailsBinding
+import com.example.reflexiontask.model.Movie
 
 class DetailsFragment : Fragment() {
 
     private val viewModel: DetailsViewModel by viewModels()
-
+    private lateinit var binding: FragmentDetailsBinding
+    private var youtubeLink: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_details, container, false)
+    ): View {
+        binding = FragmentDetailsBinding.inflate(layoutInflater)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val args: DetailsFragmentArgs by navArgs()
+        setupUI(args.movie)
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.btnWatchTrailer.setOnClickListener {
+            sendUserToYoutube()
+        }
+
+    }
+
+    private fun setupUI(data: Movie) {
+        youtubeLink = Constants.YOUTUBE_PREFIX + data.YouTubeTrailer
+        binding.title.text = data.Title
+        binding.rating.text = String.format("%s/10", data.Rating)
+        binding.release.text = data.Year
+        val cast = data.Cast.split("|")
+        cast.let {
+            val casts = listOf(
+                binding.cast1,
+                binding.cast2,
+                binding.cast3,
+                binding.cast4,
+                binding.cast5,
+            )
+            for (i in it.indices) {
+                if (i > 6) break
+                casts[i].text = it[i]
+                casts[i].visibility = View.VISIBLE
+            }
+        }
+        Glide.with(this)
+            .load(data.MoviePoster)
+            .placeholder(R.drawable.ic_movie)
+            .signature(ObjectKey(data.IMDBID))
+            .into(binding.moviePoster)
+            .clearOnDetach()
+        binding.about.text = data.Summary
+    }
+
+    private fun sendUserToYoutube() {
+        if (youtubeLink != null) {
+            // Open in YouTube app if available
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink))
+            intent.setPackage("com.google.android.youtube")
+            if (intent.resolveActivity(requireActivity().packageManager) != null) {
+                startActivity(intent)
+            } else {
+                // Open in web browser if YouTube app is not installed
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink)))
+            }
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "Trailer is not available at this moment",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 }

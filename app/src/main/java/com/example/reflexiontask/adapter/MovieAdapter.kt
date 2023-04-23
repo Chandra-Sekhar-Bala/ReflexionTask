@@ -13,11 +13,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.ObjectKey
 import com.example.reflexiontask.R
 import com.example.reflexiontask.model.Movie
-import com.example.reflexiontask.model.MovieData
-import java.util.UUID
 
 class MovieAdapter : ListAdapter<Movie, MovieAdapter.MyViewHolder>(DiffCallback) {
     lateinit var context: Context
+    var onItemClick : ((Movie) -> Unit)? = null
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val img: ImageView = itemView.findViewById(R.id.img_movie)
         val title: TextView = itemView.findViewById(R.id.title)
@@ -64,6 +63,9 @@ class MovieAdapter : ListAdapter<Movie, MovieAdapter.MyViewHolder>(DiffCallback)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val data = getItem(position)
         holder.bind(data)
+        holder.itemView.setOnClickListener{
+            onItemClick?.invoke(data)
+        }
     }
 
     object DiffCallback : DiffUtil.ItemCallback<Movie>() {

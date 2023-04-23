@@ -16,10 +16,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/anime_poster"
+            android:id="@+id/movie_poster"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +42,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/anime_poster">
+            app:layout_constraintTop_toBottomOf="@+id/movie_poster">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constrainLayout"
@@ -98,12 +98,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Rank"
+                    android:text="Runtime"
                     app:layout_constraintStart_toStartOf="@+id/title"
                     app:layout_constraintTop_toBottomOf="@+id/title" />
 
                 <TextView
-                    android:id="@+id/ranking"
+                    android:id="@+id/runtime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -124,7 +124,7 @@
                     app:layout_constraintTop_toTopOf="@+id/textView2" />
 
                 <TextView
-                    android:id="@+id/releaseOngoing"
+                    android:id="@+id/release"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -135,50 +135,114 @@
                     tools:text="No" />
 
                 <TextView
+                    android:id="@+id/cast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/runtime"
+                    app:layout_constraintTop_toBottomOf="@+id/runtime"
+                    android:text="Cast:" />
+
+                <HorizontalScrollView
                     android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Total"
-                    app:layout_constraintStart_toStartOf="@+id/textView2"
-                    app:layout_constraintTop_toBottomOf="@+id/ranking" />
+                    android:layout_marginTop="8dp"
+                    android:scrollbarStyle="outsideOverlay"
+                    app:layout_constraintStart_toStartOf="@+id/cast"
+                    app:layout_constraintTop_toBottomOf="@+id/cast">
 
-                <TextView
-                    android:id="@+id/total_episodes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/textView5"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5"
-                    tools:text="25" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Duration"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView5"
-                    app:layout_constraintStart_toEndOf="@+id/textView5"
-                    app:layout_constraintTop_toTopOf="@+id/textView5" />
+                        <TextView
+                            android:id="@+id/cast_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle_bg"
+                            android:backgroundTint="@null"
+                            android:padding="4dp"
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            tools:text="Keegan Allen" />
 
-                <TextView
-                    android:id="@+id/duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="monospace"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/textView6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6"
-                    tools:text="2 he 30 min per ep" />
+                        <TextView
+                            android:id="@+id/cast_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/rectangle_bg"
+                            android:backgroundTint="@null"
+                            android:padding="4dp"
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            tools:text="Keegan Allen" />
+
+                        <TextView
+                            android:id="@+id/cast_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/rectangle_bg"
+                            android:backgroundTint="@null"
+                            android:padding="4dp"
+                            android:visibility="gone"
+                            android:textSize="12sp"
+                            tools:text="Keegan Allen" />
+
+                        <TextView
+                            android:id="@+id/cast_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/rectangle_bg"
+                            android:backgroundTint="@null"
+                            android:padding="4dp"
+                            android:visibility="gone"
+                            android:textSize="12sp"
+                            tools:text="Keegan Allen" />
+
+
+                        <TextView
+                            android:id="@+id/cast_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/rectangle_bg"
+                            android:backgroundTint="@null"
+                            android:padding="4dp"
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            tools:text="Keegan Allen" />
+
+                        <TextView
+                            android:id="@+id/cast_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/rectangle_bg"
+                            android:backgroundTint="@null"
+                            android:padding="4dp"
+                            android:textSize="12sp"
+                            android:visibility="gone"
+                            tools:text="Keegan Allen" />
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
 
                 <Button
                     android:id="@+id/btn_watchTrailer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="16dp"
                     android:background="@drawable/rectangle_bg"
                     android:paddingHorizontal="20dp"
                     android:text="Watch Trailer"
@@ -186,7 +250,7 @@
                     android:textColor="?attr/TextColor"
                     app:backgroundTint="@null"
                     app:layout_constraintStart_toStartOf="@+id/textView5"
-                    app:layout_constraintTop_toBottomOf="@+id/duration" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
                 <TextView
                     android:id="@+id/textView7"

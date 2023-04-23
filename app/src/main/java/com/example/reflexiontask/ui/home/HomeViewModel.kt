@@ -24,9 +24,8 @@ class HomeViewModel @Inject constructor(private val api: MovieAPI) : ViewModel()
     }
 
     private fun getMovie(page: Int) {
-
+        // because I have only fixed two page data
         if (page > 2) return
-        Log.i("TAGTAG", "getMovie: called")
 
         viewModelScope.launch {
 
@@ -45,8 +44,7 @@ class HomeViewModel @Inject constructor(private val api: MovieAPI) : ViewModel()
     }
 
     fun getNextPage() {
-        page++
-        getMovie(page)
+        getMovie(++page)
     }
 
 }

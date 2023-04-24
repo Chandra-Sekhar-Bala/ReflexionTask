@@ -22,5 +22,5 @@ This is a simple Movie android app. Data provided by 2 json file. Movie can be s
   9. Splash Screen API
   10. Dependency Injection (Hilt)
   
-### Future Update
-I mistakely used Fragment for shoing details as I am using navigation compoenent with bottom navbar. Now the bottom navbar is showing in details screen that dosen't make sense. So I will be updating DetailsFragment to DetailsActivity. 
+### Improvement
+I mistakely used Fragment for showing details. As I am using navigation compoenent with bottom navbar, the bottom navbar is showing in details screen that dosen't make sense. So I will be updating DetailsFragment to DetailsActivity. 

@@ -1,7 +1,6 @@
 package com.example.reflexiontask.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +42,10 @@ class HomeFragment : Fragment() {
         super.onResume()
 
         viewModel.movieList.observe(this) {
+            it.let {
+                binding.shimmerLayout.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
+            }
             adapter.submitList(it)
         }
 

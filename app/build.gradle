@@ -88,9 +88,10 @@ dependencies {
     // circle imageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-
     // splashscreen
     implementation 'androidx.core:core-splashscreen:1.0.0'
+    // shimmer effect
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
 
 }

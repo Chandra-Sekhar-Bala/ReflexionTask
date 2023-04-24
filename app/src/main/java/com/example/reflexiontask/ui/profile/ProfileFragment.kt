@@ -18,31 +18,37 @@ import com.example.reflexiontask.databinding.FragmentProfileBinding
 @Suppress("NAME_SHADOWING")
 class ProfileFragment : Fragment() {
 
-    private lateinit var viewModel: ProfileViewModel
     private lateinit var binding: FragmentProfileBinding
-    private var image_uri: String? = null
+    private var profileImageUri: String? = null
     private lateinit var sharedPf: SharedPreferences
+    var ct = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.i("TAG", "onCreateView: called ")
         binding = FragmentProfileBinding.inflate(layoutInflater)
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.i("TAG", "onCreate: ")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPf = requireContext().getSharedPreferences("user_data", Context.MODE_PRIVATE)
 
+        // setup UI
+        setDataToProfile()
         // first disable editable views
         activeEditableViews(false)
     }
 
     override fun onResume() {
         super.onResume()
-
-        setDataToProfile()
 
         binding.imagePicker.setOnClickListener {
             imgResult.launch("image/*")
@@ -75,27 +81,19 @@ class ProfileFragment : Fragment() {
         val userName = sharedPf.getString("user_name", null)
         val userEmail = sharedPf.getString("user_email", null)
         val userPhone = sharedPf.getString("user_phone", null)
-        val profileUri = sharedPf.getString("profile_uri", null)
-
+        profileImageUri = sharedPf.getString("profile_uri", null)
         if (userName != null) {
             binding.edtName.setText(userName)
             binding.edtEmail.setText(userEmail)
             binding.edtPhone.setText(userPhone)
-            if (profileUri != null) {
-                val profileUri = Uri.parse(profileUri)
+            if (profileImageUri != null) {
+                val profileUri = Uri.parse(profileImageUri)
                 Glide.with(requireActivity())
                     .load(profileUri)
                     .into(binding.imgProfile)
             }
         }
     }
-
-    private fun activeEditableViews(value: Boolean) {
-        binding.edtName.isEnabled = value
-        binding.edtEmail.isEnabled = value
-        binding.edtPhone.isEnabled = value
-    }
-
     // save the details of user
     private fun saveDetails() {
         // Save user data in SharedPreferences
@@ -105,8 +103,7 @@ class ProfileFragment : Fragment() {
                 putString("user_name", binding.edtName.text.toString().trim())
                 putString("user_email", binding.edtEmail.text.toString().trim())
                 putString("user_phone", binding.edtPhone.text.toString().trim())
-                putString("profile_uri", image_uri)
-                Log.i("TAG", "saveDetails: $image_uri")
+                putString("profile_uri", profileImageUri)
                 apply()
             }
         }
@@ -117,7 +114,6 @@ class ProfileFragment : Fragment() {
         val name = binding.edtName.text.toString().trim()
         val email = binding.edtEmail.text.toString().trim()
         val phone = binding.edtPhone.text.toString().trim()
-
         if (name.isEmpty()) {
             binding.edtName.error = "Please enter your name"
             return false
@@ -135,17 +131,21 @@ class ProfileFragment : Fragment() {
             binding.edtPhone.error = "Please enter your phone number"
             return false
         }
-
         return true
     }
 
     // getting image from gallery
-
     private val imgResult = registerForActivityResult(ActivityResultContracts.GetContent()) {
         it.let {
-            image_uri = it.toString()
+            profileImageUri = it.toString()
             binding.imgProfile.setImageURI(it)
         }
+    }
+
+    private fun activeEditableViews(value: Boolean) {
+        binding.edtName.isEnabled = value
+        binding.edtEmail.isEnabled = value
+        binding.edtPhone.isEnabled = value
     }
 
     override fun onDestroy() {

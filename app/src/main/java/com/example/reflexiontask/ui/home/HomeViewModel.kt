@@ -34,7 +34,7 @@ class HomeViewModel @Inject constructor(private val api: MovieAPI) : ViewModel()
                 if (_movieList.value == null) {
                     _movieList.postValue(data.movieList)
                 } else {
-                    _movieList.postValue(_movieList.value?.plus(data.movieList))
+                    _movieList.value = _movieList.value!! + data.movieList
                 }
             } catch (e: Exception) {
                 Log.i("TAG-TAG", "getMovie:  ${e.message}")
